@@ -72,6 +72,8 @@ abstract class JHtmlEmail
 				}
 				else
 				{
+				    //$text needs to be decoded if it contains atleast one html-tag
+				    if (preg_match("~(<[^>]+/>)|(<[^>]+>[^<]*</[^>]+>)~", $text)) $text = html_entity_decode($text);
 					$tmpScript = "var addy_text" . $rand . " = '" . $text . "';";
 				}
 
