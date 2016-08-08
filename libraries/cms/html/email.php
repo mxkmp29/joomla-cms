@@ -59,8 +59,11 @@ abstract class JHtmlEmail
 			// Special handling when mail text is different from mail address
 			if ($text)
 			{
-				// Convert text - here is the right place
-				$text = static::convertEncoding($text);
+				// Convert text unless there are html tags- here is the right place
+				if (!preg_match("~(<[^>]+/>)|(<[^>]+>[^<]*</[^>]+>)~", $text))
+				{
+					$text = static::convertEncoding($text);
+				}
 
 				if ($email)
 				{
@@ -72,12 +75,6 @@ abstract class JHtmlEmail
 				}
 				else
 				{
-					// $text needs to be decoded if it contains at least one html tag
-					if (preg_match("~(<[^>]+/>)|(<[^>]+>[^<]*</[^>]+>)~", $text))
-					{
-						$text = html_entity_decode($text);
-					}
-
 					$tmpScript = "var addy_text" . $rand . " = '" . $text . "';";
 				}
 
